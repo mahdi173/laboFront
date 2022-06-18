@@ -1,0 +1,217 @@
+<div class="flex justify-between">
+    <h1 class="text-gray-700 text-3xl font-medium flex justify-start ">{{title}}</h1>
+    <button *ngIf="user.profil=='Membre'"
+    (click)="openModal()"
+    class="bg-blue-500 hover:bg-blue-700 text-white text-lg font-bold py-2 px-4 rounded my-3 flex justify-end">Ajouter Besoin</button>
+</div>
+<div class="py-12  bg-gray-100">
+    <div *ngIf="msg" class="bg-red-300 border-t-4 border-blue-400 rounded-b text-red-600 px-4 py-3 shadow-md my-3"role="alert">
+        <div class="flex">
+                <div>
+                    <p class="text-sm">
+                        {{msg}}
+                    </p>
+                </div>
+        </div>
+     </div>
+    <div  class="max-w-7xl sm:px-6 lg:px-8 mx-auto" *ngFor="let b of besoins">
+        <div *ngIf="user.id==b.membre.id || user.profil=='Responsable' || user.profil=='Admin'" class="md:flex no-wrap md:-mx-2 ">                   
+            <!-- Right Side -->
+            <div class="w-full md:w-9/12 mx-2 h-60">
+                <!-- Profile tab -->
+                <!-- About Section -->
+                <div class="bg-white p-3 shadow-sm rounded-sm">
+                    <div class="grid grid-cols-6 ">
+                        <div class="col-start-1 col-end-3 "
+                         [ngClass]="{'accepter': b.status=='Accepter', 'refuser': b.status=='Refuser', 'traitement': b.status=='En cours de traitement'} ">
+                            <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                                <mat-icon> not_listed_location</mat-icon>
+                                <span class="tracking-wide">Besoin</span>
+                            </div>
+                        </div>
+                        
+                        <div *ngIf="user.profil=='Membre'" class="col-end-6 col-span-1">
+                                <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8" (click)="edit(b)">
+                                    <button  type="button" class="flex items-center space-x-2 ">
+                                        <mat-icon class="edit-icon">edit</mat-icon>
+                                        <span class="tracking-wide">Modifier</span>
+                                    </button>
+
+                                </div>                                      
+                        </div>
+                        <div *ngIf="user.profil=='Responsable'" class="col-end-6 col-span-1">
+                            <div class="font-semibold text-gray-900 leading-8">
+                                     <button type="button"  class="flex items-center space-x-2 " (click)="accepter(b)">
+                                        <mat-icon class="accept-icon ">check_circle</mat-icon>
+                                        <span class="tracking-wide">Accepter</span>
+                                     </button>
+                             </div>  
+                         </div>
+                        <div *ngIf="user.profil=='Responsable'" class="col-end-7 col-span-1">
+                           <div class="font-semibold text-gray-900 leading-8">
+                                    <button  type="button"  class="flex items-center space-x-2 " (click)="refuser(b)">
+                                        <mat-icon class="refuse-icon">cancel</mat-icon>
+                                        <span class="tracking-wide">Refuser</span>
+                                    </button>
+                            </div>  
+                        </div>
+                        <div *ngIf="user.profil=='Membre'" class="col-end-7 col-span-1">
+                            <div class="font-semibold text-gray-900 leading-8">
+                                     <button  type="button"  class="flex items-center space-x-2 " (click)="delete(b)">
+                                         <mat-icon class="refuse-icon">delete</mat-icon>
+                                         <span class="tracking-wide">Supprimer</span>
+                                     </button>
+                             </div>  
+                         </div>
+                    </div>
+                    <div class="text-gray-700 mt-3">
+                        <div class="grid grid-cols-3  text-sm">
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Type</div>
+                                <div class="px-4 py-2">{{b.type}} </div>
+                            </div>
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Montant</div>
+                                <div class="px-4 py-2"> {{b.montant}}</div>
+                            </div>
+                            
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Status</div>
+                                <div class="px-4 py-2"
+                                    [ngClass]="{'accepter': b.status=='Accepter', 'refuser': b.status=='Refuser', 'traitement': b.status=='En cours de traitement'} " 
+                                >
+                                       <b>{{b.status}} </b> 
+                                </div>
+                            </div>
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Description</div>
+                                <div class="px-4 py-2">{{b.description}} </div>
+                            </div>
+                            <div *ngIf="user.profil!='Membre'" class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Membre</div>
+                                <div class="px-4 py-2">{{b.membre.userName}} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of about section -->
+                <!-- End of profile tab -->
+            </div>
+        </div>
+    </div>
+    <div class="fixed z-10 inset-0 overflow-y-auto ease-out duration-400" *ngIf="isOpen">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span
+                class="hidden sm:inline-block sm:align-middle sm:h-screen"
+            ></span>​
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline">
+                <form #myForm ="ngForm" >
+                    <div
+                        class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"
+                    >
+                        <div class="">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Type:</label>
+                               
+                                <select   required #type="ngModel" name="type"  [(ngModel)] = "besoin.type" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                    <option  value="Mobilité" class="shadow appearance-none border rounded w-full py-2 px-3 text-black-700 bg-white">Mobilité</option>
+                                    <option  value="Achat Matériel" class="shadow appearance-none border rounded w-full py-2 px-3 text-black-700 bg-white">Achat Matériel</option>
+                                    <option  value="Frais d'inscription" class="shadow appearance-none border rounded w-full py-2 px-3 text-black-700 bg-white">Frais d'inscription</option>
+                                </select>
+                                <div *ngIf="type.invalid && (type.dirty || type.touched)"
+                                        class="text-red-500">
+                                    <div *ngIf="type.errors?.['required']">
+                                        Type is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" >Montant:</label>
+                                <input
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    name="montant"
+                                    placeholder="Montant"
+                                    type="montant"
+                                    [(ngModel)] = "besoin.montant" required #montant="ngModel" 
+                                    
+                                >
+                                <div *ngIf="montant.value>user.budget && montant.touched" class="text-red-500">
+                                    Le montant souhaité est supérieur à votre budget : {{user.budget}}
+                                </div>
+                                <div *ngIf="montant.invalid && (montant.dirty || montant.touched)"
+                                        class="text-red-500">
+                                    <div *ngIf="montant.errors?.['required']">
+                                        Montant is required.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Description:</label>
+                                <textarea
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    name="description"
+                                    placeholder="Description"
+                                    type="text"
+                                    [(ngModel)] = "besoin.description" required #description="ngModel" 
+                                ></textarea>
+                                <div *ngIf="description.invalid && (description.dirty || description.touched)"
+                                        class="text-red-500">
+                                    <div *ngIf="description.errors?.['required']">
+                                        Description is required.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+                    >
+                        <span
+                            class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"
+                        >
+                            <button [disabled]="myForm.invalid || besoin.montant>user.budget"
+                                type="button"
+                                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                                *ngIf="!editMode"
+                                (click)="save()"
+                            >
+                                Sauvgarder
+                            </button>
+                        </span>
+                        <span
+                            class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"
+                        >
+                            <button [disabled]="myForm.invalid || besoin.montant>user.budget"
+                                type="button"
+                                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                                *ngIf="editMode"
+                                (click)="update()"
+                            >
+                                Update
+                            </button>
+                        </span>
+                        <span
+                            class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto"
+                        >
+                            <button
+                                (click)="closeModal()"
+                                type="button"
+                                class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                            >
+                                Annuler
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+</div>

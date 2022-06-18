@@ -1,0 +1,25 @@
+.edit-icon {
+    color: rgb(0, 162, 255);
+}
+
+.accept-icon {
+    color: rgb(47, 177, 47);
+}
+
+.refuse-icon {
+    color: rgba(255, 0, 55, 0.993);
+}
+
+
+.accepter {
+    background-color: rgb(34, 185, 34);
+}
+
+.refuser {
+    background-color: rgba(241, 24, 71, 0.945);
+}
+
+
+.traitement{
+    background-color: rgba(245, 229, 7, 0.945);
+}

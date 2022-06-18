@@ -1,0 +1,85 @@
+<div class="font-sans">
+    <div class="relative min-h-screen flex flex-col sm:justify-center items-center bg-gray-100 ">
+        <div class="relative sm:max-w-sm w-full">
+            <div class="card bg-blue-400 shadow-lg  w-full h-full rounded-3xl absolute  transform -rotate-6"></div>
+            <div class="card bg-red-400 shadow-lg  w-full h-full rounded-3xl absolute  transform rotate-6"></div>
+            <div class="relative w-full rounded-3xl  px-6 py-4 bg-gray-100 shadow-md">
+                <label for="" class="block mt-3 text-sm text-gray-700 text-center font-semibold">
+                    SignUp
+                </label>
+                <div *ngIf="msg" class="bg-red-300 border-t-4 border-blue-400 rounded-b text-red-600 px-4 py-3 shadow-md my-3"role="alert">
+                    <div class="flex">
+                            <div>
+                                <p class="text-sm">
+                                    {{msg}}
+                                </p>
+                            </div>
+                    </div>
+                 </div>
+                <form #registreForm ="ngForm" (ngSubmit)="registreUser()"  class="mt-10">           
+                                    
+                    <div>
+                        <input type="text" name="userName" placeholder="User Name" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"  [(ngModel)] = "user.userName" required #userName="ngModel" minlength="4" >                           
+                        <div *ngIf="userName.invalid && (userName.dirty || userName.touched)"
+                                class="text-red-500">
+                            <div *ngIf="userName.errors?.['required']">
+                                User Name is required.
+                            </div>
+                            <div *ngIf="userName.errors?.['minlength']">
+                                User Name must be at least 4 characters long.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-7">
+                        <input type="email" name="email" placeholder="Email" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"  [(ngModel)] = "user.email" required #email="ngModel" email="true">
+                        <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                                class="text-red-500">
+                            <div *ngIf="email.errors?.['required']">
+                                Email is required.
+                            </div>
+
+                            <div *ngIf="email.errors?.['email']">
+                                Email is Invalid
+                            </div>
+                        </div>
+                    </div>
+        
+                    <div class="mt-7">                
+                        <input type="password" name="password" placeholder="Password" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"  [(ngModel)] = "user.password" required #password="ngModel" minlength="8" >                           
+                        <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                                class="text-red-500">
+                            <div *ngIf="password.errors?.['required']">
+                                Password is required.
+                            </div>
+
+                            <div *ngIf="password.errors?.['minlength']">
+                                Password must be at least 8 characters long.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-7">                
+                        <input type="password"  name="cpassword" placeholder="Confirm Password" class="mt-1 block w-full border-none bg-gray-100 h-11 rounded-xl shadow-lg hover:bg-blue-100 focus:bg-blue-100 focus:ring-0"  required (ngModel)= "user.password" #cpassword="ngModel" >                           
+                        <div *ngIf="cpassword.value!=password.value && cpassword.touched" class="text-red-500">
+                            Password & Confirm Password must be the same
+                        </div>
+                        <div *ngIf="cpassword.invalid && (cpassword.dirty || cpassword.touched)"
+                                class="text-red-500">
+                            <div *ngIf="cpassword.errors?.['required']">
+                                You must confirm your password
+                            </div> 
+                            
+                        </div>
+                    </div>
+
+                    <div class="mt-7">
+                        <button class="bg-blue-500 w-full py-3 rounded-xl text-white shadow-xl hover:shadow-inner focus:outline-none transition duration-500 ease-in-out  transform hover:-translate-x hover:scale-105">
+                            Enregistrer
+                        </button>
+                    </div>        
+                   
+                </form>
+            </div>
+        </div>
+    </div>
+    
+</div>

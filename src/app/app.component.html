@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" style="scroll-behavior: smooth;">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>GLabo</title>
+  </head>
+  <body>
+
+    <!-- Header Area wrapper Starts -->
+    <header id="header-wrap" class="relative">
+      <!-- Navbar Start -->      
+      <div class="bg-blue-100 navigation fixed top-0 left-0 w-full z-30 duration-300">
+          <div class="container">
+              <nav class="navbar py-2 navbar-expand-lg flex justify-between items-center relative duration-300">
+                  <a class="navbar-brand" >
+                    <img class="w-16 h-16" src="assets/img/logo.png" alt="Logo">
+                  </a>
+                  <button class="navbar-toggler focus:outline-none block lg:hidden" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                      <span class="toggler-icon"></span>
+                      <span class="toggler-icon"></span>
+                      <span class="toggler-icon"></span>
+                  </button>
+
+                  <div class="collapse navbar-collapse hidden lg:block duration-300 shadow absolute top-100 left-0 mt-full bg-white z-20 px-5 py-3 w-full lg:static lg:bg-transparent lg:shadow-none" id="navbarSupportedContent">
+                      <ul *ngIf="user" class="navbar-nav mr-auto justify-center items-center lg:flex">
+                          <li class="nav-item">
+                            <a class="flex items-center uppercase text-gray-700" routerLink="home">
+                                 <mat-icon>
+                                <span class="material-icons-round"> home </span>
+                              </mat-icon>  
+                              <span class="mx-2">Home</span>    
+                            </a>
+                          </li>
+                          <li class=" ml-2 nav-item">
+                            
+                            <a class="flex items-center uppercase text-gray-700" routerLink="membre">
+                                <mat-icon>
+                                    <span class="material-icons-round"> face icon </span>
+                                  </mat-icon>
+                                  <span class="mx-2">Membres</span> 
+                            </a>
+                          </li>
+                          <li class="ml-2 nav-item">
+                              
+                            <a class="flex items-center uppercase text-gray-700" routerLink="labo"> 
+                                 <mat-icon>
+                                    <span class="material-icons-round"> business </span>
+                                 </mat-icon>
+                                <span class="mx-2">Labo</span> 
+
+                             </a>
+                          </li>
+                          <li class="ml-2 nav-item">
+                            
+                            <a class="flex items-center uppercase text-gray-700" routerLink="budget">
+                                <mat-icon>
+                                    <span class="material-icons-round"> attach_money </span>
+                                  </mat-icon>
+                                 <span class="mx-2">Budgets</span> 
+                            </a>
+                          </li>
+                          <li class="ml-2 nav-item">
+                            <a class="flex items-center uppercase text-gray-700" routerLink="besoin">
+                                <mat-icon>
+                                    <span class="material-icons-round">  list_alt </span>
+                                  </mat-icon>
+                                  <span class="mx-2">Besoins</span> 
+                            </a>
+                          </li>
+                          <li *ngIf="user.profil=='Admin'" class="ml-2 nav-item">
+                           
+                            <a class="flex items-center uppercase text-gray-700" routerLink="user">
+                                <mat-icon>
+                                    <span class="material-icons-round">  account_box </span>
+                                </mat-icon>
+                                <span class="mx-2">Users</span> 
+                            </a>
+                          </li>
+                         
+                      </ul>
+                  </div>
+                  <div class=" sm:block sm:absolute sm:right-0 sm:mr-16 lg:static lg:mr-0">
+                    <ul class="flex items-center  lg:flex">
+                        <li *ngIf="!user" class="mr-3">
+                            <button routerLink="login" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
+                                LogIn
+                              </button>
+                        </li>
+                        <li *ngIf="user" class="flex items-center mr-3">
+                            <div  class="relative">
+                                <button (click)="openCloseDropdown()"
+                                    class="relative block h-8 w-8 rounded-full overflow-hidden shadow focus:outline-none">
+                                    <mat-icon>
+                                        <span class="material-icons-round"> account_circle </span>
+                                      </mat-icon>
+                                </button>
+            
+        
+                                <div *ngIf="dropdownOpen" 
+                                    class="absolute right-0 mt-2 w-48 bg-white rounded-md overflow-hidden shadow-xl z-10"
+                                >
+                                  <!--a href="#"
+                                        class="block px-4 py-2 text-sm text-gray-700
+                                         hover:bg-indigo-600 hover:text-white">Profile</a>-->
+                                    
+                                    <a  (click)="logout()"
+                                     class="block px-4 py-2 text-sm text-gray-700
+                                      hover:bg-indigo-600 hover:text-white">Logout</a>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+              </nav>
+          </div>
+      </div>
+      <!-- Navbar End -->
+    </header>
+    <!-- Header Area wrapper End -->
+
+    <!-- Main -->
+    <section id="services" class="py-24  pt-40">
+      <div class="container">
+        <router-outlet></router-outlet>
+      </div>
+    </section>        
+  </body>
+</html>

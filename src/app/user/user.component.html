@@ -1,0 +1,237 @@
+<div class="flex justify-between">
+    <h1 class="text-gray-700 text-3xl font-medium flex justify-start ">{{title}}</h1>
+    <button *ngIf="loggedUser.profil=='Admin'"
+    (click)="openModal()"
+    class="bg-blue-500 hover:bg-blue-700 text-white text-lg font-bold py-2 px-4 rounded my-3 flex justify-end">Ajouter User</button>
+</div>
+<div class="py-12 bg-gray-100">
+    <div *ngIf="msg" class="bg-red-300 border-t-4 border-blue-400 rounded-b text-red-600 px-4 py-3 shadow-md my-3"role="alert">
+        <div class="flex">
+                <div>
+                    <p class="text-sm">
+                        {{msg}}
+                    </p>
+                </div>
+        </div>
+     </div>
+    <div class="max-w-7xl sm:px-6 lg:px-8 mx-auto" *ngFor="let u of users">
+        <div class="md:flex no-wrap md:-mx-2 ">                   
+            <!-- Right Side -->
+            <div class="w-full md:w-9/12 mx-2 h-40">
+                <!-- Profile tab -->
+                <!-- About Section -->
+                <div class="bg-white p-3 shadow-sm rounded-sm">
+                    <div class="grid grid-cols-6">
+                        <div class="col-start-1 col-end-3">
+                            <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8">
+                                <mat-icon>
+                                    <span class="material-icons-round">  account_box </span>
+                                  </mat-icon>
+                                <span class="tracking-wide">Users</span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-end-6 col-span-1">
+                                <div class="flex items-center space-x-2 font-semibold text-gray-900 leading-8" (click)="edit(u)">
+                                    <button *ngIf="loggedUser.profil=='Admin'" type="button" class="flex items-center space-x-2 ">
+                                        <mat-icon class="edit-icon">edit</mat-icon>
+
+                                        <span class="tracking-wide">Modifier</span>
+                                    </button>
+
+                                </div>                                      
+                        </div>
+                        <div class="col-end-7 col-span-1">
+                           <div class="font-semibold text-gray-900 leading-8">
+                                    <button *ngIf="loggedUser.profil=='Admin'" type="button"  class="flex items-center space-x-2 " (click)="delete(u)">
+                                        <mat-icon class="refuse-icon">delete</mat-icon>
+
+                                        <span class="tracking-wide">Supprimer</span>
+                                    </button>
+                            </div>  
+                        </div>
+
+                    </div>
+                    <div class="text-gray-700 mt-3">
+                        <div class="grid grid-cols-3  text-sm">
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">User Name</div>
+                                <div class="px-4 py-2">{{u.userName}} </div>
+                            </div>
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Email </div>
+                                <div class="px-4 py-2"> {{u.email}}</div>
+                            </div>
+                            <div class="inline-flex">
+                                <div class="px-4 py-2 font-semibold">Profil </div>
+                                <div class="px-4 py-2">{{u.profil}} </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End of about section -->
+                <!-- End of profile tab -->
+            </div>
+        </div>
+    </div>
+    <div class="fixed z-10 inset-0 overflow-y-auto ease-out duration-400" *ngIf="isOpen">
+        <div class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
+            <div class="fixed inset-0 transition-opacity">
+                <div class="absolute inset-0 bg-gray-500 opacity-75"></div>
+            </div>
+            <!-- This element is to trick the browser into centering the modal contents. -->
+            <span
+                class="hidden sm:inline-block sm:align-middle sm:h-screen"
+            ></span>​
+            <div
+                class="inline-block align-bottom bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:align-middle sm:max-w-lg sm:w-full"
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="modal-headline">
+                <form>
+                    <div
+                        class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4"
+                    >
+                        <div class="">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2">Nom:</label>
+                                <input
+                                    type="text"
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    name="userName"
+                                    placeholder="Nom"
+                                    type="text"
+                                    [(ngModel)] = "user.userName" required #userName="ngModel" minlength="4"
+                                />
+                                <div *ngIf="userName.invalid && (userName.dirty || userName.touched)"
+                                        class="text-red-500">
+                                    <div *ngIf="userName.errors?.['required']">
+                                        User Name is required.
+                                    </div>
+                                    <div *ngIf="userName.errors?.['minlength']">
+                                        User Name must be at least 4 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 text-sm font-bold mb-2" >Email:</label>
+                                <input
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    name="email"
+                                    placeholder="Email"
+                                    type="email"
+                                    [(ngModel)] = "user.email" required #email="ngModel" email="true"
+                                >
+                                <div *ngIf="email.invalid && (email.dirty || email.touched)"
+                                        class="text-red-500">
+                                    <div *ngIf="email.errors?.['required']">
+                                        Email is required.
+                                    </div>
+
+                                    <div *ngIf="email.errors?.['email']">
+                                        Email is Invalid
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4" *ngIf="!editMode">
+                                <label
+                                    class="block text-gray-700 text-sm font-bold mb-2"
+                                    >Password:</label>
+                                <input
+                                    class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                    name="password"
+                                    placeholder="password"
+                                    type="password"
+                                    [(ngModel)] = "user.password" required #password="ngModel" minlength="8" 
+                                >
+                                <div *ngIf="password.invalid && (password.dirty || password.touched)"
+                                        class="text-red-500">
+                                    <div *ngIf="password.errors?.['required']">
+                                        Password is required.
+                                    </div>
+
+                                    <div *ngIf="password.errors?.['minlength']">
+                                        Password must be at least 8 characters long.
+                                    </div>
+                                </div>
+                            </div>
+                            <div *ngIf="user.profil=='Responsable'">
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Grade:</label>
+                                    <input
+                                        class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+                                        name="grade"
+                                        placeholder="grade"
+                                        type="number"
+                                        [(ngModel)] = "respo.grade" required #grade="ngModel" 
+                                    >
+                                    <div *ngIf="grade.invalid && (grade.dirty || grade.touched)"
+                                            class="text-red-500">
+                                        <div *ngIf="grade.errors?.['required']">
+                                            Grade is required.
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="mb-4" *ngIf="!editMode">
+                                <div class="mb-4">
+                                    <label class="block text-gray-700 text-sm font-bold mb-2">Profil:</label>
+                                
+                                    <select   required #profil="ngModel" name="profil"  [(ngModel)] = "user.profil" class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline">
+                                        <option  value="Responsable" class="shadow appearance-none border rounded w-full py-2 px-3 text-black-700 bg-white">Responsable</option>
+                                        <option  value="Admin" class="shadow appearance-none border rounded w-full py-2 px-3 text-black-700 bg-white">Admin</option>
+                                    </select>
+                                    <div *ngIf="profil.invalid && (profil.dirty || profil.touched)"
+                                            class="text-red-500">
+                                        <div *ngIf="profil.errors?.['required']">
+                                            Profil is required.
+                                        </div>
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div
+                        class="bg-gray-50 px-4 py-3 sm:px-6 sm:flex sm:flex-row-reverse"
+                    >
+                        <span
+                            class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"
+                        >
+                            <button
+                                type="button"
+                                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                                *ngIf="!editMode"
+                                (click)="save()"
+                            >
+                                Sauvgarder
+                            </button>
+                        </span>
+                        <span
+                            class="flex w-full rounded-md shadow-sm sm:ml-3 sm:w-auto"
+                        >
+                            <button
+                                type="button"
+                                class="inline-flex justify-center w-full rounded-md border border-transparent px-4 py-2 bg-green-600 text-base leading-6 font-medium text-white shadow-sm hover:bg-green-500 focus:outline-none focus:border-green-700 focus:shadow-outline-green transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                                *ngIf="editMode"
+                                (click)="update()"
+                            >
+                                Update
+                            </button>
+                        </span>
+                        <span
+                            class="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto"
+                        >
+                            <button
+                                (click)="closeModal()"
+                                type="button"
+                                class="inline-flex justify-center w-full rounded-md border border-gray-300 px-4 py-2 bg-white text-base leading-6 font-medium text-gray-700 shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:shadow-outline-blue transition ease-in-out duration-150 sm:text-sm sm:leading-5"
+                            >
+                                Annuler
+                            </button>
+                        </span>
+                    </div>
+                </form>
+            </div>
+        </div>
+</div>
+</div>
